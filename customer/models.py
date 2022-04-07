@@ -1,46 +1,30 @@
+from operator import mod
+from pyexpat import model
 from django.db import models;
 from product import models as Model
-
+from django.contrib.auth.models import User as User
 # Create your models here.
+
+class FullName(models.Model):
+    id= models.AutoField(primary_key=True)
+    firstName = models.CharField(max_length=200,null=True)
+    middleName = models.CharField(max_length=200, null=True)
+    lastName = models.CharField(max_length=200, null=True)
+
 class Customer(models.Model):
-    name = models.CharField(max_length=200,null=True)
-    email = models.CharField(max_length=200, null=True)
+    id=models.AutoField(primary_key=True)
+    user= models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    fullName = models.OneToOneField(FullName, null=True, on_delete=models.CASCADE)
+    gender = models.CharField(max_length=100, null=True)
+    phoneNumber = models.CharField(max_length=11,null=True)
 
-    def __str__(self):
-        return self.name
-
+class Address(models.Model):
+    id = models.AutoField(primary_key=True)
+    city = models.CharField(max_length=200, null=True)
+    street = models.CharField(max_length=200, null=True)
+    district = models.CharField(max_length=200, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    
 class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL,blank=True,null=True)
-    date = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(default=200,null=True)
-    transaction_id = models.CharField(max_length=200, null=True)
-
-    def __str__(self):
-        return str(self.id)
-
-class OrderItem(models.Model):
-    book = models.ForeignKey(Model.Book, on_delete=models.SET_NULL,blank=True,null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL,blank=True,null=True)
-    quantity = models.IntegerField(default=0, null=True, blank=True)
-    date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.id)
-
-class ShippingAddress(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL,blank=True,null=True)
-    name = models.CharField(max_length=200,null=True)
-    price = models.FloatField(max_length=200, null=True)
-    type = models.CharField(max_length=200, null=True)
-
-    def __str__(self):
-        return str(self.id)
-
-class Paying(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL,blank=True,null=True)
-    name = models.CharField(max_length=200,null=True)
-    price = models.FloatField(null=True)
-    type = models.CharField(max_length=200, null=True)
-
-    def __str__(self):
-        return str(self.id)
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=200, null=True)

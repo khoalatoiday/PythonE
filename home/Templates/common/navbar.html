@@ -3,9 +3,7 @@
     <!-- Container wrapper -->
     <div class="container-fluid">
       <!-- Navbar brand -->
-      <a class="navbar-brand" href="#">
-        Khoa Koha
-      </a>
+      <a class="navbar-brand" href="#"> Khoa Koha </a>
 
       <!-- Toggle button -->
       <button
@@ -25,7 +23,9 @@
         <!-- Left links -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/books">Home</a>
+            <a class="nav-link active" aria-current="page" href="/books"
+              >Home</a
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Cart</a>
@@ -33,16 +33,36 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Order</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Quản lý sản phẩm</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Quản lý tài khoản</a>
-          </li>
 
-          {% if user %} 
+          {% if user.is_authenticated %} 
+
+          <li class="nav-item">
+            <a class="nav-link" href="/userinfo">Thông tin người dùng</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/changePassword">Thay đổi mật khẩu</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="/logout">Đăng xuất</a>
+          </li>
+
+          {% for group in  request.user.groups.all %}
+          {%  if 'admin' == group.name %}
+             
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/books">Quản lý sản phẩm</a>
+          </li>
+          {% endif %}
+          {% endfor %}
+         
+
+         
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Đăng nhập</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/register">Đăng kí</a>
           </li>
           {% endif %}
         </ul>

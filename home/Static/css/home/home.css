@@ -1,3 +1,17 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+body {
+    font-family: "Poppins-Regular";
+    font-size: 15px;
+    color: #666;
+    background-color: #6645eb;
+    margin: 0
+}
+
 #list-books .table {
     margin:5rem auto;
     width: 80%

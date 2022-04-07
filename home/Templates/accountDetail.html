@@ -1,0 +1,31 @@
+{% extends 'common/layout.html' %} {% load static %} {% block styles %}
+<link rel="stylesheet" href="{% static 'css/customer/detail.css' %}" />
+{% endblock %} {% block body %} {% include "common/navbar.html" %}
+
+
+<div class="wrapper">
+    <form action="/changeUserInfo" method="POST" >
+        {% csrf_token %}
+        <div id="wizard">
+            <!-- SECTION 1 -->
+            <h4></h4>
+            <section>
+                <div class="form-row"> <input readOnly="true" type="text" class="form-control" name="username" placeholder="Name"  value={% if customer %} {{customer.user.username}} {% else %} "" {% endif %}> </div>
+                <div class="form-row"> <input required="true" type="text" class="form-control" name="email" placeholder="email" value={% if customer %} {{customer.user.email}} {% else %} "" {% endif %}> </div>
+                <div class="form-row"> <input required="true" type="text" class="form-control" name="gender" placeholder="gender" value={% if customer %} {{customer.gender}} {% else %} "" {% endif %}> </div>
+                <div class="form-row"> <input required="true" type="text" class="form-control" name="phoneNumber" placeholder="Phone number" value={% if customer %} {{customer.phoneNumber}} {% else %} "" {% endif %}> </div>
+                <div class="form-row"> <input required="true" type="text" class="form-control" name="street" placeholder="street" value={% if address %} {{address.street}} {% else %} "" {% endif %}> </div>
+                <div class="form-row"> <input required="true" type="text" class="form-control" name="district" placeholder="district" value={% if address %} {{address.district}} {% else %} "" {% endif %}> </div>
+                <div class="form-row"> <input required="true" type="text" class="form-control" name="city" placeholder="city" value={% if address %} {{address.city}} {% else %} "" {% endif %}> </div>
+            </section> <!-- SECTION 2 -->
+            <h4></h4>
+            
+            <h4></h4>
+        </div>
+
+        <button class="btn btn-lg btn-success me-5" type="submit">Edit</button>
+        <a href="/books"><button class="btn btn-lg btn-danger">Back</button></a>
+    </form>
+</div
+
+{% endblock body %}

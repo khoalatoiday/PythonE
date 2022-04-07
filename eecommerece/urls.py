@@ -25,7 +25,7 @@ from authen import views as authen
 from django.conf.urls.static import static
 from django.conf import settings
 
-from django.contrib.auth import authenticate,login 
+
 from customer import views as customer
 
 urlpatterns = [
@@ -41,10 +41,15 @@ urlpatterns = [
     path("login", authen.getLoginForm),
     path("register", authen.getRegisterForm),
     path("activeRegister",authen.register),
-    path("activeLogin",authen.login),
+    path("activeLogin",authen.loginAction),
     path("logout",authen.logout_view),
     path("delete/<int:id>/",product.deleteBook),
-    path("cart", customer.cart)
+    path("changePassword",authen.getChangePassWordForm),
+    path("changePasswordAction", authen.change_password),
+    path("userinfo",customer.getCustomerInfo),
+    path("changeUserInfo", customer.changeCustomerInfo),
+   
+   path("error", home.get_error)
    
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
