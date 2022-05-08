@@ -1,0 +1,98 @@
+{% extends 'Templates/common/layout.html' %} 
+
+{% load static  %}
+
+{% block style %}
+  <link rel="stylesheet" href="{%static "css/account-detail.css" %}"/>
+{% endblock %}
+
+{% block body %} 
+{% include 'Templates/common/navbar.html' %}
+
+<div class="container-xl px-4 mt-4">
+
+  <nav class="nav nav-borders">
+      <a class="nav-link active ms-0" href="https://www.bootdey.com/snippets/view/bs5-edit-profile-account-details" target="__blank">Profile</a>
+      <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-billing-page" target="__blank">Billing</a>
+      <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page" target="__blank">Security</a>
+      <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"  target="__blank">Notifications</a>
+  </nav>
+  <hr class="mt-0 mb-4">
+  <div class="row">
+      <div class="col-xl-4">
+          
+          <div class="card mb-4 mb-xl-0">
+              <div class="card-header">Profile Picture</div>
+              <div class="card-body text-center">
+                  
+                  <img style="width:250px; height:300px" class="img-account-profile rounded-circle mb-2" src="/img/{{request.user.customer.avatar}}" alt="avatar">
+                  
+                  <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+               
+                  <button class="btn btn-primary" type="button">Upload new image</button>
+              </div>
+          </div>
+      </div>
+      <div class="col-xl-8">
+         
+          <div class="card mb-4">
+              <div class="card-header">Account Details</div>
+              <div class="card-body">
+                  <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                      <div class="mb-3">
+                          <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
+                          {{ form.userName }}
+                      </div>
+                     
+                      <div class="row gx-3 mb-3">
+                          
+                          <div class="col-md-6">
+                              <label class="small mb-1" for="inputFirstName">First name</label>
+                              {{form.firstName}}
+                          </div>
+                         
+                          <div class="col-md-6">
+                              <label class="small mb-1" for="inputLastName">Last name</label>
+                              {{form.lastName}}
+                          </div>
+                      </div>
+                    
+                      <div class="row gx-3 mb-3">
+                          
+                          <div class="col-md-6">
+                              <label class="small mb-1" for="inputOrgName">Stress</label>
+                             {{form.street}}
+                          </div>
+                        
+                          <div class="col-md-6">
+                              <label class="small mb-1" for="inputLocation">District</label>
+                              {{form.district}}
+                          </div>
+                      </div>
+                      
+                      <div class="mb-3">
+                          <label class="small mb-1" for="inputEmailAddress">City</label>
+                          {{form.city}}
+                      </div>
+                     
+                      <div class="row gx-3 mb-3">
+                         
+                          <div class="col-md-6">
+                              <label class="small mb-1" for="inputPhone">Phone number</label>
+                             {{form.phoneNumber}}
+                          </div>
+                         
+            
+                      </div>
+                     
+                      <button  class="btn btn-primary" type="submit">Save changes</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+{% include 'Templates/common/footer.html' %} {% endblock body %}

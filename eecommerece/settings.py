@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'home',
+  
     'product',
-    'customer'
+    'customer',
+    'order',
+    'authen'
 ]
 
 MIDDLEWARE = [
@@ -57,7 +59,13 @@ ROOT_URLCONF = 'eecommerece.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR,'eecommerece'),
+            os.path.join(BASE_DIR,'product'),
+            os.path.join(BASE_DIR,'customer'),
+            os.path.join(BASE_DIR,'auth'),
+            os.path.join(BASE_DIR,'order')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,6 +132,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_URL = "/home/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'home/media/')
+STATIC_URL = '/Static/'
+
+MEDIA_URL = '/img/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'eecommerece/static/img')
+

@@ -1,0 +1,117 @@
+{% extends 'Templates/common/layout.html' %} {% block body %} 
+{% include  'Templates/common/navbar.html' %}
+
+<!--Main layout-->
+<main class="mt-5 pt-4">
+  <div class="container dark-grey-text mt-5">
+   
+    <div class="row wow fadeIn">
+      <div class="col-md-6 mb-4">
+        <img
+          src="/img/{{choosenBook.image}}"
+          class="img-fluid"
+          alt=""
+        />
+      </div>
+
+      <div class="col-md-6 mb-4">
+        <!--Content-->
+        <div class="p-4">
+          <div class="mb-3">
+            <a href="">
+              <span class="mr-1">Category 2</span>
+            </a>
+            <a href="">
+              <span class="mr-1">New</span>
+            </a>
+            <a href="">
+              <span class="mr-1">Bestseller</span>
+            </a>
+          </div>
+
+          <p class="lead mt-5">
+            <span class="mr-1">
+              <del>${{choosenBook.price}}</del>
+            </span>
+            <span>${{choosenBook.price}}</span>
+          </p>
+
+          <p class="lead font-weight-bold">Description</p>
+
+          <p>
+           {{choosenBook.description}}
+          </p>
+
+          <form class="d-flex justify-content-left">
+            <!-- Default input -->
+            <input
+              type="number"
+              value="1"
+              aria-label="Search"
+              class="form-control"
+              style="width: 100px"
+            />
+            <a href="/addToCart/{{choosenBook.id}}" class="btn btn-primary btn-md my-0 p" type="submit">
+              Add to cart
+              <i class="fas fa-shopping-cart ml-1"></i>
+            </a>
+          </form>
+        </div>
+        <!--Content-->
+      </div>
+    </div>
+   
+
+    <hr />
+
+    <div class="row d-flex justify-content-center wow fadeIn">
+      <!--Grid column-->
+      <div class="col-md-6 text-center">
+        <h4 class="my-4 h4">Additional information</h4>
+
+        <p>
+         Chào mừng đến với page của chúng tôi
+        </p>
+      </div>
+      <!--Grid column-->
+    </div>
+   
+
+    
+    <div class="row wow fadeIn">
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-12 mb-4">
+        <img
+          src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg"
+          class="img-fluid"
+          alt=""
+        />
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <img
+          src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg"
+          class="img-fluid"
+          alt=""
+        />
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <img
+          src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg"
+          class="img-fluid"
+          alt=""
+        />
+      </div>
+      <!--Grid column-->
+    </div>
+   
+  </div>
+</main>
+<!--Main layout-->
+
+{% include 'Templates/common/footer.html' %} {% endblock body %}

@@ -13,45 +13,27 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from argparse import Namespace
 from math import prod
 from pipes import Template
 from django.contrib import admin
-from django.urls import path
-from home import views as home
+from django.urls import path,include
 from product import views as product
-from detail import views as detail
 from authen import views as authen
-
 from django.conf.urls.static import static
 from django.conf import settings
-
-
 from customer import views as customer
+
+from product import urls as productUrls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path("",home.get_home),
-    path("admin/books/", product.get_products),
-    path("books", product.get_products_for_users),
-    path("detail/<int:id>/", detail.get_details),
-    path("bookForm",product.getAddBookForm),
-    path("add",product.addBook),
-    path("bookForm/<int:id>/",product.getEditBookForm),
-    path("edit/<int:id>/",product.editBook),
-    path("login", authen.getLoginForm),
-    path("register", authen.getRegisterForm),
-    path("activeRegister",authen.register),
-    path("activeLogin",authen.loginAction),
-    path("logout",authen.logout_view),
-    path("delete/<int:id>/",product.deleteBook),
-    path("changePassword",authen.getChangePassWordForm),
-    path("changePasswordAction", authen.change_password),
-    path("userinfo",customer.getCustomerInfo),
-    path("changeUserInfo", customer.changeCustomerInfo),
-   
-   path("error", home.get_error)
-   
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+   path('', include('product.urls')),
+   path('',include('customer.urls')),
+   path('',include('authen.urls')),
+   path('',include('order.urls'))
+] + static(settings.MEDIA_URL, document_root =settings.MEDIA_ROOT)
+
 
 admin.site.site_header="Khoa_Koha"
 

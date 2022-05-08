@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from customer.models import Customer as Customer
 from customer.models import Address as Address
+from order import models as OrderModel
+from product import models as ProductModel
 # Create your views here.
 def getLoginForm(request):
     return render(request, 'login.html')
@@ -26,9 +28,16 @@ def loginAction(request):
         user = authenticate(request,username=username,password=password)
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect("/books")
-        else:
-            return HttpResponseRedirect("/error")
+            cart_qs = OrderModel.Cart.objects.filter(customer=user.customer.id,status=False)
+            
+            if cart_qs.exists():
+                books_orders_count = ProductModel.OrderedBook.objects.filter(cart=cart_qs[0].id).count()
+                
+                request.session['count'] = books_orders_count  
+                print(request.session.get("count"))
+            return HttpResponseRedirect("/?page=1")
+        else:   
+            return HttpResponseRedirect("/login")
 
 def getRegisterForm(request):
     return render(request,"register.html")
@@ -42,13 +51,13 @@ def register(request):
         user = authenticate(username=username, password= password)
         if user and user.is_active:
             login(request,user)
-            return HttpResponseRedirect("/books")
+            return HttpResponseRedirect("/?page=1")
          
         user = User.objects.create_user(username,email,password)
         g = Group.objects.get(name='user')
         user.groups.add(g)
         Customer.objects.create(user=user).save()
-        return HttpResponseRedirect("/books")
+        return HttpResponseRedirect("/?page=1")
 
 def logout_view(request):
     print(request)
@@ -65,7 +74,7 @@ def change_password(request):
             u = User.objects.get(username=username)
             u.set_password(newPassword)
             u.save()
-            return HttpResponseRedirect("/books")
+            return HttpResponseRedirect("/?page=1")
         else:
             return HttpResponseRedirect("/error")
       
