@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-  
+    'eecommerece',
     'product',
     'customer',
     'order',
@@ -135,5 +135,5 @@ USE_TZ = True
 STATIC_URL = '/Static/'
 
 MEDIA_URL = '/img/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'eecommerece/static/img')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'eecommerece/Static/img')
 

@@ -4,6 +4,8 @@ from django.urls import reverse
 
 from order.models import Cart
 
+
+
 # Create your models here.
 class Book(models.Model):
     id=models.AutoField(primary_key=True)
@@ -12,9 +14,30 @@ class Book(models.Model):
     discount = models.IntegerField(null=True, blank=True)
     description = models.CharField(max_length=255, null= False, blank=True)
     image = models.ImageField(upload_to="books",null=True, blank=True)
+    category = models.CharField(max_length=50,null=False,default="book")
     def __str__(self):
         return str(self.id)
-    
+
+class Shoes(models.Model):
+    id=models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50, null=False, blank= True)
+    price = models.FloatField(null=False, blank=True)
+    description = models.CharField(max_length=255, null= False, blank=True)
+    image = models.ImageField(upload_to="shoes",null=True, blank=True)
+    category = models.CharField(max_length=50,null=False,default="shoes")
+    def __str__(self):
+        return str(self.id)
+
+class Clothes(models.Model):
+    id=models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50, null=False, blank= True)
+    price = models.FloatField(null=False, blank=True)
+    description = models.CharField(max_length=255, null= False, blank=True)
+    image = models.ImageField(upload_to="chothes",null=True, blank=True)
+    category= models.CharField(max_length=50,null=False,default="clothes")
+    def __str__(self):
+        return str(self.id)
+
 class OrderedBook(models.Model):
     id = models.AutoField(primary_key=True)
     quantity = models.IntegerField(default=1, null= True, blank=True)
