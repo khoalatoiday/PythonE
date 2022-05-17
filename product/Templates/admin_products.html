@@ -1,10 +1,9 @@
-{% extends 'Templates/common/layout.html' %} {% block body%}
-
+{% extends 'Templates/common/layout.html' %} {% block body%} 
 {% include "Templates/common/navbar.html" %}
-<main class="text-center">
+<main class="text-center" style="margin-top: 5rem; ">
   <section id="list-books">
     <div class="table-responsive-md">
-      <table class="table table-hover align-middle">
+      <table class="table table-hover align-middle" >
         <thead class="table-primary">
           <tr>
             <th scope="col">Id</th>
@@ -16,27 +15,26 @@
           </tr>
         </thead>
         <tbody>
-          {% for book in books_list %}
-          <tr class="table-secondary">
-            <td>{{book.id}}</td>
-            <td>{{book.name}}</td>
-            <td>{{book.price}}</td>
-            <td>{{book.description}}</td>
+          {% for product in all_lists %}
+          <tr class="table">
+            <td>{{product.id}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+            <td>{{product.description}}</td>
             <td>
               <img
-                src="/img/{{book.image}}"
+                src="/img/{{product.image}}"
                 class="img"
                 style="width: 50px; height: 80px"
               />
             </td>
             <td>
-              <a class="btn btn-sm btn-success" href="/detail/{{book.id}}"
-                >Chi tiết</a
-              >
-              <a href="/bookForm/{{book.id}}" class="btn btn-sm btn-warning"
+              <a href="/bookForm/{{product.id}}/?category={{product.category}}" class="btn btn-sm btn-warning"
                 >Sửa</a
               >
-              <a class="btn btn-sm btn-danger" href="/delete/{{book.id}}">Xóa</a>
+              <a class="btn btn-sm btn-danger" href="/delete/{{product.id}}/?category={{product.category}}"
+                >Xóa</a
+              >
             </td>
           </tr>
           {% endfor %}
@@ -45,7 +43,7 @@
     </div>
   </section>
   <a href="/bookForm" class="btn btn-lg btn-success" style="text-align: center"
-    >Thêm sản phẩm sách</a
+    >Thêm sản phẩm</a
   >
 </main>
 <footer></footer>

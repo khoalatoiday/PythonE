@@ -1,10 +1,10 @@
-<header>
+<header >
   <nav class="navbar navbar-expand-lg navbar-light white scrolling-navbar fixed-top">
     <div class="container">
       <!-- Brand -->
       <a
         class="navbar-brand waves-effect"
-        href="/?page=1"
+        href="/products/all?page=1"
         target="_blank"
       >
         <strong class="blue-text">Khoa koha</strong>
@@ -28,7 +28,7 @@
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link waves-effect" href="/?page=1"
+            <a class="nav-link waves-effect" href="/products/all?page=1"
               >Home
               <span class="sr-only">(current)</span>
             </a>
@@ -37,8 +37,7 @@
           <li class="nav-item">
             <a
               class="nav-link waves-effect"
-              href="#"
-             
+              href="/order"
               >Order</a
             >
           </li>
@@ -47,9 +46,18 @@
           <li class="nav-item">
             <a
               class="nav-link waves-effect"
-              href="/admin/books"
+              href="/admin/products"
            
               >Quản lý sản phẩm</a
+            >
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link waves-effect"
+              href="/order-admin"
+           
+              >Quản lý Orders</a
             >
           </li>
 
@@ -126,11 +134,11 @@
       </div>
     </div>
   </nav>
-
   {% if messages %} {% for message in messages %}
   <div
-    class="mt-5 alert alert-{{message.tags}} alert-dismissible fade show"
+    class="alert alert-{{message.tags}} alert-dismissible fade show"
     role="alert"
+    style="margin-top:5rem"
   >
     {{message}}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">

@@ -1,0 +1,31 @@
+{% extends 'Templates/common/layout.html' %} {% load static %} {% block body %}
+{% include 'Templates/common/navbar.html' %}
+
+<div class="table-wrap" style="margin: 100px">
+  <table class="table" style="overflow: auto">
+    <thead class="thead-primary">
+      <tr>
+        <th>Id</th>
+        <th>Status</th>
+        <th>Shipment</th>
+        <th>Payment</th>
+        <th>Total Price</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <th scope="row" class="scope">{{order.id}}</th>
+        <td>{{order.status}}</td>
+        <td>{{order.shipment.type}}</td>
+        <td>{{order.payment.type}}</td>
+        <td>{{order.totalPrice}} VND</td>
+        <td>{{order.orderDate}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+ {% endblock body %}

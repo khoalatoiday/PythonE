@@ -35,7 +35,7 @@ def loginAction(request):
                 
                 request.session['count'] = books_orders_count  
                 print(request.session.get("count"))
-            return HttpResponseRedirect("/?page=1")
+            return HttpResponseRedirect("/products/all?page=1")
         else:   
             return HttpResponseRedirect("/login")
 

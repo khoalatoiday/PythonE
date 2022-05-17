@@ -1,5 +1,7 @@
 
+from time import time
 from django.db import models
+from pytz import timezone
 from customer import models as CustomerModel
 # Create your models here.
 class Cart(models.Model):

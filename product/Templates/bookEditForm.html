@@ -7,7 +7,7 @@
   enctype="multipart/form-data"
   class="mx-auto"
   style="width: 50%"
-  action="{% if choosenBook %} /edit/{{choosenBook.id}}/ {% else %} /add {% endif %}"
+  action="{% if product %}/edit/{{product.id}}/?category={{product.category}}{% else %} /add {% endif %}"
 >
 {% csrf_token %}
   <!-- 2 column grid layout with text inputs for the first and last names -->
@@ -16,10 +16,11 @@
       <div class="form-outline">
         <label class="form-label" for="form6Example1">Name</label>
         <input
+        required
           type="text"
           name="name"
           class="form-control"
-          value={% if choosenBook %} {{choosenBook.name}} {% else %} "" {% endif %}
+          value={% if product %} {{product.name}} {% else %} "" {% endif %}
         />
       </div>
     </div>
@@ -28,40 +29,61 @@
   <div class="form-outline">
     <label class="form-label" for="form6Example1">Price</label>
     <input
+    required
       type="number"
       name="price"
       class="form-control"
-      value={% if choosenBook %} {{choosenBook.price}} {% else %} 0 {% endif %}
+      value={% if product %} {{product.price}} {% else %} 0 {% endif %}
     />
+  </div>
+
+  <div class="form-outline">
+    <label class="form-label" for="form6Example1">Category</label>
+
+    <select value={% if product %} {{product.category}} {% else %} 0 {% endif %} name="category" class="browser-default custom-select">
+      <option value="books">Books</option>
+      <option value="shoes">Shoes</option>
+      <option value="clothes">Clothes</option>
+    </select>
+
   </div>
 
   <div class="form-outline">
     <label class="form-label" for="form6Example1">Description</label>
     <input
+    required
       type="text"
       name="description"
       class="form-control"
-      value="{% if choosenBook %} {{choosenBook.description}} {% else %} "" {% endif %}"
+      value="{% if product %} {{product.description}} {% else %} "" {% endif %}"
     />
   </div>
 
   <div class="form-outline">
     <label class="form-label" for="form6Example1">Image</label>
-
+    
+  {% if product %}
    <p>
     <img
-    src="/img/{{choosenBook.image}}"
+    src="/img/{{product.image}}"
     class="card-img-top"
     style="width:250px; height:250px"
     alt="None"
    </p>
+   <div class="form-group">
+    <input name="image" type="file" class="form-control-file" id="exampleFormControlFile1">
+  </div>
    
   </div>
-
+  {% else %}
+  <div class="form-group">
+    <input required name="image" type="file" class="form-control-file" id="exampleFormControlFile1">
+  </div>
+  {% endif %}
  
 
   <button  type="submit" class="btn btn-primary btn-block mt-4">
-    {% if choosenBook %} Sửa {% else %} Thêm {% endif %}
+    {% if product %} Sửa {% else %} Thêm {% endif %}
   </button>
 </form>
 
@@ -69,23 +91,3 @@
 </main>
 
 {% endblock body %}
-
-{% comment %} 
-
- <div class="form-outline">
-    <label class="form-label" for="form6Example1">Image</label>
-
-    <div class="d-flex justify-content-start">
-
-      {% if choosenBook %}
-      <img
-      src="/home/media/{{choosenBook.image}}"
-      class="img"
-      style="width: 200px; height: 200px"
-    />
-      {% endif %}   
-
-      <input type="file" name="image" class="form-control " />
-    </div>
-  </div>
-{% endcomment %}

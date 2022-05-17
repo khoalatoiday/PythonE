@@ -18,9 +18,9 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id','orderDate','totalPrice','status','discount','cart','shipment','payment')
+    list_display = ('id','orderDate','totalPrice','status','discount','cart','shipment','payment','customer')
     search_fields = ['name']
-    list_filter = ('id','orderDate','totalPrice','status','discount','cart','shipment','payment')
+    list_filter = ('id','orderDate','totalPrice','status','discount','cart','shipment','payment','customer')
 
 admin.site.register(Cart, CartAdmin)
 admin.site.register(Order,OrderAdmin)

@@ -212,13 +212,13 @@
     </div>
     <section class="text-center mb-4 mt-4">
       <div class="row wow fadeIn">
-        {% for book in page.object_list %}
+        {% for product in page.object_list %}
         <div class="col-lg-3 col-md-6 mb-4">
           <div class="card">
             <div>
               <div class="view overlay">
                 <img
-                  src="/img/{{book.image}}"
+                  src="/img/{{product.image}}"
                   class="card-img-top"
                   style="width: 250px; height: 250px"
                   alt=""
@@ -228,31 +228,32 @@
               </div>
               <div class="card-body text-center">
                 <span class="grey-text">
-                  <h5>{{book.name}}</h5>
+                  <h5>{{product.name}}</h5>
                 </span>
                 <h5>
                   <strong>
                     <span class="dark-grey-text"
-                      >{{book.description}}
+                      >{{product.description}}
                       <span class="badge badge-pill danger-color">NEW</span>
                     </span>
                   </strong>
                 </h5>
                 <h4 class="font-weight-bold blue-text">
-                  <strong>{{book.price}}</strong>
+                  <strong>{{product.price}}</strong>
                 </h4>
               </div>
             </div>
 
             <div>
               <a
-                href="/details/{{book.id}}"
+                href="/details/{{product.id}}/?category={{product.category}}"
                 class="btn btn-outline-primary btn-sm"
                 >Detail</a
               >
               <a
-                href="/addToCart/{{book.id}}"
+                href="/addToCart/{{product.id}}?category={{product.category}}"
                 class="btn btn-outline-success btn-sm"
+               
                 >Add to Cart</a
               >
             </div>
@@ -271,7 +272,7 @@
         <li class="page-item">
           <a
             class="page-link"
-            href="/?page={{page.previous_page_number}}"
+            href="{% if request.session.category %}/products/{{request.session.category}}?page={{page.previous_page_number}}{% else %}/products/all?page={{page.previous_page_number }}{% endif %}"
             aria-label="Previous"
           >
             <span aria-hidden="true">&laquo;</span>
@@ -290,7 +291,7 @@
         <li class="page-item">
           <a
             class="page-link"
-            href="/?page={{page.next_page_number}}"
+            href="{% if request.session.category %}/products/{{request.session.category}}?page={{page.next_page_number}} {% else %} /products/all?page={{page.next_page_number}} {% endif %}"
             aria-label="Next"
           >
             <span aria-hidden="true">&raquo;</span>

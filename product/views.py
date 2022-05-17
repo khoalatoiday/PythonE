@@ -10,12 +10,20 @@ from order import models as OrderModel
 from django.core.paginator import Paginator
 from django.db.models.functions import Concat
 import array
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+def init(request):
+    return redirect("/products/all?page=1")
+
+@login_required(login_url="login/")
 def get_products_for_admin(request):
-    books_list = Book_Model.objects.filter().order_by("id")
-    return render(request, './Templates/admin_products.html',{"books_list": books_list})
+    books_list = list(Book_Model.objects.filter().order_by("id"))
+    clothes_list = list(Clothes_Model.objects.filter().order_by("id"))
+    shoes_list = list(Shoes_Model.objects.filter().order_by("id"))
+    allList = list(itertools.chain(books_list, clothes_list, shoes_list))
+    return render(request, './Templates/admin_products.html',{"all_lists": allList})
+
 
 def get_products_for_users(request, category=None, name =None):
     books_list = []
@@ -74,62 +82,118 @@ def get_products_for_users(request, category=None, name =None):
     }
     return render(request, './Templates/home-page.html',context=context)
 
+@login_required(login_url="login/")
 def getEditBookForm(request,id):
-    choosenBook = Book_Model.objects.get(id = id)
-    return render(request, 'bookEditForm.html',{"choosenBook": choosenBook})
+    category = request.GET.get("category")
+    if category == 'book':
+        product = Book_Model.objects.get(id = id)
+    if category == 'clothes':
+        product = Clothes_Model.objects.get(id=id)
+    if category == "shoes":
+        product = Shoes_Model.objects.get(id=id)
     
 
+    return render(request, 'bookEditForm.html',{"product": product})
+    
+@login_required(login_url="login/")
 def getAddBookForm(request):
     return render(request, 'bookEditForm.html')
 
+@login_required(login_url="login/")
+def addProduct(request):
 
-def addBook(request):
+    category = request.GET.get("category")
     if request.method == "POST":
         name = request.POST['name']
         price = request.POST['price']
         description = request.POST['description']
-        image = request.FILES['image']
+        category = request.POST['category']
+        image = request.FILES['image'] 
 
-        book = Book_Model.objects.create(name=name, price=price, description=description, image=image)
+        if category == "book":
+            book = Book_Model.objects.create(name=name, price=price, description=description, image=image)
+            book.save()
 
-        book.save()
-        return redirect("/books")
+        if category == 'shoes':
+            shoes = Shoes_Model.objects.create(name=name, price=price, description=description, image=image)
+            shoes.save()
+        
+        if category == 'clothes':
+            clothes = Clothes_Model.objects.create(name=name, price=price, description=description, image=image)
+            clothes.save()
+
+
+        return redirect("/products/all?page=1")
     else:
         return render(request,"error.html")
 
-def editBook(request,id):
+@login_required(login_url="login/")
+def editProduct(request,id):
+
+    category = request.GET.get("category")
+
     if request.method == "POST":
         name = request.POST['name']
         price = request.POST['price']
         description = request.POST['description']
-        if request.FILES['image']:
-            image = request.FILES['image']
-        
-        book = Book_Model.objects.get(id = id)
-        if image:
-            book.image = image
-        if name:
+        image = request.FILES.get('image', False)
+        if category == "book":
+            book = Book_Model.objects.get(id = id)
             book.name = name
-        if price:
             book.price = price
-        if description:
             book.description = description
+            book.image = image and image or book.image
+            book.save()
+        if category == "shoes":
+            shoes = Shoes_Model.objects.get(id=id)
+            shoes.name = name
+            shoes.price = price
+            shoes.description = description
+            shoes.image = image and image
+            shoes.save()
+        if category == "clothes":
+            clothes = Clothes_Model.objects.get(id=id)
+            clothes.name = name
+            clothes.price = price
+            clothes.description = description
+            clothes.image = image and image
+            clothes.save()
 
-        book.save()
         
-        return redirect("/books")
+        return redirect("/products/all?page=1")
     else:
         return render(request,"error.html")
 
-def deleteBook(request,id): 
-    book = Book_Model.objects.get(id = id)
-    book.delete()
-    return redirect("/books")
+@login_required(login_url="login/")
+def deleteProduct(request,id):
+    category = request.GET.get("category")
+    if category == "book":
+        book = Book_Model.objects.get(id = id)
+        book.delete()
+    if category == "shoes":
+        shoes = Shoes_Model.objects.get(id = id)
+        shoes.delete()
+    if category == "clothes":
+        clothes = Clothes_Model.objects.get(id=id)
+        clothes.delete()
+         
+    return redirect("/products/all?page=1")
 
+@login_required(login_url="login/")
 def get_details(request,id):
-    choosenBook = Book_Model.objects.get(id = id)
-    return render(request,"./Templates/product-page.html",{'choosenBook': choosenBook})
+    category = request.GET.get("category")
+    if category == "book":
+        product = Book_Model.objects.get(id = id)
+       
+    if category == "shoes":
+        product = Shoes_Model.objects.get(id = id)
+       
+    if category == "clothes":
+        product = Clothes_Model.objects.get(id=id)
+       
+    return render(request,"./Templates/product-page.html",{'product': product})
 
+@login_required(login_url="login/")
 def search_products_by_category(request):
     if request.method == "POST":
         category = request.POST['category']
@@ -137,7 +201,7 @@ def search_products_by_category(request):
         url = "/products/" + category + "?page=1"
         return redirect(url)
    
-
+@login_required(login_url="login/")
 def search_products_by_key(request):
     if request.method == 'POST':
         name = request.POST['name']

@@ -8,7 +8,7 @@
     <div class="row wow fadeIn">
       <div class="col-md-6 mb-4">
         <img
-          src="/img/{{choosenBook.image}}"
+          src="/img/{{product.image}}"
           class="img-fluid"
           alt=""
         />
@@ -31,15 +31,15 @@
 
           <p class="lead mt-5">
             <span class="mr-1">
-              <del>${{choosenBook.price}}</del>
+              <del>${{product.price}}</del>
             </span>
-            <span>${{choosenBook.price}}</span>
+            <span>${{product.price}}</span>
           </p>
 
           <p class="lead font-weight-bold">Description</p>
 
           <p>
-           {{choosenBook.description}}
+           {{product.description}}
           </p>
 
           <form class="d-flex justify-content-left">
@@ -51,7 +51,7 @@
               class="form-control"
               style="width: 100px"
             />
-            <a href="/addToCart/{{choosenBook.id}}" class="btn btn-primary btn-md my-0 p" type="submit">
+            <a href="/addToCart/{{product.id}}?category={{product.category}}" class="btn btn-primary btn-md my-0 p" type="submit">
               Add to cart
               <i class="fas fa-shopping-cart ml-1"></i>
             </a>

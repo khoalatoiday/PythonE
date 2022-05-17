@@ -9,7 +9,7 @@
 {% block body %} 
 {% include 'Templates/common/navbar.html' %}
 
-<main>
+<main style="padding-top: 1rem">
   <section class="h-100 h-custom" style="background-color: #d2c9ff">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -36,19 +36,19 @@
                   >
                     <div class="col-md-2 col-lg-2 col-xl-2">
                       <img
-                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
+                        src="/img/{{ordered_book.book.image}}{{ordered_book.shoes.image}}{{ordered_book.clothes.image}}"
                         class="img-fluid rounded-3"
                         alt="Cotton T-shirt"
                       />
                     </div>
                     <div class="col-md-3 col-lg-3 col-xl-3">
-                      <h6 class="text-muted">{{ordered_book.book.name}}</h6>
-                      <h6 class="text-black mb-0">{{ordered_book.book.description}}</h6>
+                      <h6 class="text-muted">{{ordered_book.book.name}}{{ordered_book.shoes.name}}{{ordered_book.clothes.name}}</h6>
+                      <h6 class="text-black mb-0">{{ordered_book.book.description}}{{ordered_book.shoes.description}}{{ordered_book.clothes.description}}</h6>
                     </div>
                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                       <a
                         class="btn btn-link px-2"
-                        href="/decreSingleItem/{{ordered_book.book.id}}"
+                        href="/decreSingleItem/{{ordered_book.book.id}}{{ordered_book.clothes.id}}{{ordered_book.shoes.id}}?category={{ordered_book.book.category}}{{ordered_book.clothes.category}}{{ordered_book.shoes.category}}"
                       >
                         <i class="fas fa-minus"></i>
                     </a>
@@ -64,7 +64,7 @@
 
                       <a
                         class="btn btn-link px-2"
-                        href="/increSingleItem/{{ordered_book.book.id}}"
+                        href="/increSingleItem/{{ordered_book.book.id}}{{ordered_book.clothes.id}}{{ordered_book.shoes.id}}?category={{ordered_book.book.category}}{{ordered_book.clothes.category}}{{ordered_book.shoes.category}}"
                       >
                         <i class="fas fa-plus"></i>
                     </a>
@@ -73,7 +73,7 @@
                       <h6 class="mb-0">{{ordered_book.totalPrice}}</h6>
                     </div>
                     <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                      <a href="/removeFromCart/{{ordered_book.book.id}}" class="text-muted"
+                      <a href="/removeFromCart/{{ordered_book.book.id}}{{ordered_book.clothes.id}}{{ordered_book.shoes.id}}?category={{ordered_book.book.category}}{{ordered_book.clothes.category}}{{ordered_book.shoes.category}}" class="text-muted"
                         ><i class="fas fa-times"></i
                       ></a>
                     </div>
@@ -86,7 +86,7 @@
 
                     <div class="pt-5">
                       <h6 class="mb-0">
-                        <a href="/?page=1" class="text-body"
+                        <a href="/products/all?page=1" class="text-body"
                           ><i class="fas fa-long-arrow-alt-left me-2"></i>Back
                           to shop</a
                         >
@@ -100,24 +100,10 @@
                     <hr class="my-4" />
 
 
-
                    
                  <form action="/check-out" method="POST">
                    {% csrf_token %}
-                    <h5 class="text-uppercase mb-3">Give code</h5>
-
-                    <div class="mb-5">
-                      <div class="form-outline">
-                        <input
-                          type="text"
-                          id="form3Examplea2"
-                          class="form-control form-control-lg"
-                        />
-                        <label class="form-label" for="form3Examplea2"
-                          >Enter your code</label
-                        >
-                      </div>
-                    </div>
+                    
                   <div class="input-group mb-3">
                     <select name="payment" class="custom-select" id="inputGroupSelect02" >
                       {% for payment in payments %}

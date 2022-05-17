@@ -11,5 +11,7 @@ urlpatterns = [
     path("increSingleItem/<int:id>",incre_single_item),
     path("decreSingleItem/<int:id>",decre_single_item),
     path("create-order", create_order),
-   
+    path("order",renderOrder),
+    path("order-admin",renderOrderAdmin),
+    path("finish-order",finishOrder)
 ]

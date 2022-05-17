@@ -17,9 +17,9 @@ class ClothesAdmin(admin.ModelAdmin):
     list_filter = ('id','name','price','description','image',"category")
 
 class OrderedBookAdmin(admin.ModelAdmin):
-    list_display = ('id','quantity','book','totalPrice','cart')
+    list_display = ('id','quantity','book','totalPrice','cart', "shoes","clothes")
     search_fields = ['id']
-    list_filter = ('id','quantity','book','totalPrice','cart')
+    list_filter = ('id','quantity','book','totalPrice','cart', "shoes","clothes")
 
 admin.site.register(Book, BookAdmin)
 admin.site.register(OrderedBook,OrderedBookAdmin)
