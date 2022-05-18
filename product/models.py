@@ -18,13 +18,13 @@ class Book(models.Model):
     def __str__(self):
         return str(self.id)
 
-class Shoes(models.Model):
+class Laptop(models.Model):
     id=models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, null=False, blank= True)
     price = models.FloatField(null=False, blank=True)
     description = models.CharField(max_length=255, null= False, blank=True)
-    image = models.ImageField(upload_to="shoes",null=True, blank=True)
-    category = models.CharField(max_length=50,null=False,default="shoes")
+    image = models.ImageField(upload_to="laptop",null=True, blank=True)
+    category = models.CharField(max_length=50,null=False,default="Laptop")
     def __str__(self):
         return str(self.id)
 
@@ -43,7 +43,7 @@ class OrderedBook(models.Model):
     quantity = models.IntegerField(default=1, null= True, blank=True)
     totalPrice = models.FloatField( blank=True, default=0)
     book =models.ForeignKey(Book,null=True, default=None,  on_delete=models.CASCADE)
-    shoes =models.ForeignKey(Shoes,null=True,default=None,  on_delete=models.CASCADE)
+    Laptop =models.ForeignKey(Laptop,null=True,default=None,  on_delete=models.CASCADE)
     clothes =models.ForeignKey(Clothes,null=True,default=None,  on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart,null=True,  on_delete=models.CASCADE)
     def __str__(self):
@@ -51,8 +51,8 @@ class OrderedBook(models.Model):
     def get_total_price(self):
         if self.book:
             return self.quantity * self.book.price
-        if self.shoes:
-            return self.quantity * self.shoes.price
+        if self.Laptop:
+            return self.quantity * self.Laptop.price
         if self.clothes:
             return self.quantity * self.clothes.price
     

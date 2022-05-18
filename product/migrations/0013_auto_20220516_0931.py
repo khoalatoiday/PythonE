@@ -22,14 +22,14 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Shoes',
+            name='Laptop',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(blank=True, max_length=50)),
                 ('price', models.FloatField(blank=True)),
                 ('description', models.CharField(blank=True, max_length=255)),
-                ('image', models.ImageField(blank=True, null=True, upload_to='shoes')),
-                ('category', models.CharField(default='shoes', max_length=50)),
+                ('image', models.ImageField(blank=True, null=True, upload_to='Laptop')),
+                ('category', models.CharField(default='Laptop', max_length=50)),
             ],
         ),
         migrations.AddField(

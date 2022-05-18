@@ -82,14 +82,14 @@ def renderCheckOut(request):
 def addToCart(request, id):
   category = request.GET.get("category")
   book = None
-  shoes = None
+  Laptop = None
   clothes = None
 
   if category == "book":
     book = get_object_or_404(ProductModel.Book, id=id)
 
-  if category == "shoes":
-    shoes = get_object_or_404(ProductModel.Shoes, id=id)
+  if category == "Laptop":
+    Laptop = get_object_or_404(ProductModel.Laptop, id=id)
 
   if category == "clothes":
     clothes = get_object_or_404(ProductModel.Clothes, id=id)
@@ -98,13 +98,13 @@ def addToCart(request, id):
     totalPrice = book.price
   if clothes:
     totalPrice = clothes.price
-  if shoes:
-    totalPrice = shoes.price
+  if Laptop:
+    totalPrice = Laptop.price
 
   cart_qs = Cart.objects.filter(customer=request.user.customer, status=False)
   if cart_qs.exists():
     cart = cart_qs[0]
-    orderedBook_qs = ProductModel.OrderedBook.objects.filter(cart=cart,book=book,shoes=shoes,clothes=clothes)
+    orderedBook_qs = ProductModel.OrderedBook.objects.filter(cart=cart,book=book,Laptop=Laptop,clothes=clothes)
     if orderedBook_qs.exists():
       orderedBook = orderedBook_qs[0]
       orderedBook.quantity += 1
@@ -114,7 +114,7 @@ def addToCart(request, id):
       orderedBook.save()
       messages.info(request, "Sản phẩm đã được cập nhật vào giỏ hàng!")
     else:
-      orderedBook = ProductModel.OrderedBook.objects.create(cart=cart,book=book,shoes=shoes,clothes=clothes, totalPrice=totalPrice)
+      orderedBook = ProductModel.OrderedBook.objects.create(cart=cart,book=book,Laptop=Laptop,clothes=clothes, totalPrice=totalPrice)
       cart.totalPrice += totalPrice
       cart.save()
       orderedBook.save()
@@ -122,9 +122,9 @@ def addToCart(request, id):
       messages.info(request, "Sản phẩm đã được thêm vào giỏ hàng!")
   else:
     customer = Customer.objects.get(id=request.user.customer.id)
-    cart = Cart.objects.create(customer=customer) 
-    orderedBook = ProductModel.OrderedBook.objects.create(book=book,shoes=shoes,clothes=clothes,cart=cart,totalPrice=totalPrice)
-    cart.totalPrice += (book.price or clothes.price or shoes.price)
+    cart = Cart.objects.create(customer=customer,status=False) 
+    orderedBook = ProductModel.OrderedBook.objects.create(book=book,Laptop=Laptop,clothes=clothes,cart=cart,totalPrice=totalPrice)
+    cart.totalPrice += totalPrice
     cart.save()
     orderedBook.save()
     request.session['count'] = 1
@@ -136,18 +136,18 @@ def remove_item_from_cart(request,id):
   category = request.GET.get("category")
 
   book = None
-  shoes = None
+  Laptop = None
   clothes = None
   if category == "book":
     book = get_object_or_404(ProductModel.Book, id=id)
-  if category == "shoes":
-    shoes = get_object_or_404(ProductModel.Shoes, id=id)
+  if category == "Laptop":
+    Laptop = get_object_or_404(ProductModel.Laptop, id=id)
   if category == "clothes":
     clothes = get_object_or_404(ProductModel.Clothes, id =id)
   cart_qs = Cart.objects.filter(customer=request.user.customer, status=False)
   if cart_qs.exists():
     cart = cart_qs[0]
-    orderedBook_qs = ProductModel.OrderedBook.objects.filter(cart=cart,book=book, clothes=clothes, shoes=shoes)
+    orderedBook_qs = ProductModel.OrderedBook.objects.filter(cart=cart,book=book, clothes=clothes, Laptop=Laptop)
     if orderedBook_qs.exists:
       orderedBook = orderedBook_qs[0]
       cart.totalPrice -= (orderedBook.totalPrice)
@@ -162,23 +162,23 @@ def incre_single_item(request,id):
   category = request.GET.get("category")
 
   book = None
-  shoes = None
+  Laptop = None
   clothes = None
   totalPrice = 0
 
   if category == "book":
     book = get_object_or_404(ProductModel.Book, id=id)
     totalPrice = book.price
-  if category == "shoes":
-    shoes = get_object_or_404(ProductModel.Shoes, id=id)
-    totalPrice = shoes.price
+  if category == "Laptop":
+    Laptop = get_object_or_404(ProductModel.Laptop, id=id)
+    totalPrice = Laptop.price
   if category == "clothes":
     clothes = get_object_or_404(ProductModel.Clothes, id =id)
     totalPrice = clothes.price
   cart_qs = Cart.objects.filter(customer=request.user.customer, status=False)
   if cart_qs.exists():
     cart = cart_qs[0]
-    orderedBook_qs = ProductModel.OrderedBook.objects.filter(cart=cart,book=book,clothes=clothes,shoes=shoes)
+    orderedBook_qs = ProductModel.OrderedBook.objects.filter(cart=cart,book=book,clothes=clothes,Laptop=Laptop)
     if orderedBook_qs.exists:
       orderedBook = orderedBook_qs[0]
       orderedBook.quantity += 1
@@ -194,16 +194,16 @@ def decre_single_item(request,id):
   category = request.GET.get("category")
 
   book = None
-  shoes = None
+  Laptop = None
   clothes = None
   totalPrice = 0
 
   if category == "book":
     book = get_object_or_404(ProductModel.Book, id=id)
     totalPrice = book.price
-  if category == "shoes":
-    shoes = get_object_or_404(ProductModel.Shoes, id=id)
-    totalPrice = shoes.price
+  if category == "Laptop":
+    Laptop = get_object_or_404(ProductModel.Laptop, id=id)
+    totalPrice = Laptop.price
   if category == "clothes":
     clothes = get_object_or_404(ProductModel.Clothes, id =id)
     totalPrice = clothes.price
@@ -211,8 +211,8 @@ def decre_single_item(request,id):
   print(book)
   if cart_qs.exists():
     cart = cart_qs[0]
-    print(clothes," ",shoes," ", cart)
-    orderedBook_qs = ProductModel.OrderedBook.objects.filter(cart=cart,book=book,clothes=clothes,shoes=shoes)
+    print(clothes," ",Laptop," ", cart)
+    orderedBook_qs = ProductModel.OrderedBook.objects.filter(cart=cart,book=book,clothes=clothes,Laptop=Laptop)
     print(orderedBook_qs)
     if orderedBook_qs.exists:
       orderedBook = orderedBook_qs[0]

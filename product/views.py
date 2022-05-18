@@ -1,9 +1,10 @@
 from asyncio.windows_events import NULL
 import itertools
+from math import ceil
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Book as Book_Model;
-from .models import Shoes as Shoes_Model
+from .models import Laptop as Laptop_Model
 from .models import Clothes as Clothes_Model
 from .models import OrderedBook
 from order import models as OrderModel
@@ -20,59 +21,61 @@ def init(request):
 def get_products_for_admin(request):
     books_list = list(Book_Model.objects.filter().order_by("id"))
     clothes_list = list(Clothes_Model.objects.filter().order_by("id"))
-    shoes_list = list(Shoes_Model.objects.filter().order_by("id"))
-    allList = list(itertools.chain(books_list, clothes_list, shoes_list))
+    Laptop_list = list(Laptop_Model.objects.filter().order_by("id"))
+    allList = list(itertools.chain(books_list, clothes_list, Laptop_list))
     return render(request, './Templates/admin_products.html',{"all_lists": allList})
 
 
 def get_products_for_users(request, category=None, name =None):
+    #request.session['count'] = 0
     books_list = []
     clothes_list = []
-    shoes_list = []
+    Laptop_list = []
     allList = []
 
     if category == "all":
         books_list = list(Book_Model.objects.filter().order_by("id"))
         clothes_list = list(Clothes_Model.objects.filter().order_by("id"))
-        shoes_list = list(Shoes_Model.objects.filter().order_by("id"))
-        allList = list(itertools.chain(books_list, clothes_list, shoes_list))
-        request.session['category'] = False
+        Laptop_list = list(Laptop_Model.objects.filter().order_by("id"))
+        allList = list(itertools.chain(books_list, clothes_list, Laptop_list))
+        request.session['category'] = "all"
 
     if category == 'books':
         allList = list(Book_Model.objects.filter().order_by("id"))
     
-    if category == 'shoes':
+    if category == 'clothes':
         allList = list(Clothes_Model.objects.filter().order_by("id"))
 
-    if category == 'clothes':
-        allList = list(Shoes_Model.objects.filter().order_by("id"))
+    if category == 'Laptop':
+        allList = list(Laptop_Model.objects.filter().order_by("id"))
 
     name = request.GET.get("name")
 
     if name and category == 'all':
         books_list = list(Book_Model.objects.filter(name=name).order_by("id"))
         clothes_list = list(Clothes_Model.objects.filter(name=name).order_by("id"))
-        shoes_list = list(Shoes_Model.objects.filter(name=name).order_by("id"))
-        allList = list(itertools.chain(books_list, clothes_list, shoes_list))
+        Laptop_list = list(Laptop_Model.objects.filter(name=name).order_by("id"))
+        allList = list(itertools.chain(books_list, clothes_list, Laptop_list))
         request.session['category'] = category
     
     if name and category == 'books':
         allList = list(Book_Model.objects.filter(name=name).order_by("id"))
 
-    if name and category == 'shoes':
-        allList = list(Shoes_Model.objects.filter(name=name).order_by("id"))
+    if name and category == 'Laptop':
+        allList = list(Laptop_Model.objects.filter(name=name).order_by("id"))
 
 
     if name and category == 'clothes':
         allList = list(Clothes_Model.objects.filter(name=name).order_by("id"))
 
-    p = Paginator(allList,1)
+    p = Paginator(allList,4)
 
     page_number = request.GET.get('page')
     page_number = int(page_number)
+
     
     pages = array.array('i',[])
-    for i in range(1, round(p.count / 1)+1):
+    for i in range(1, ceil(p.count / 4 )+1):
         pages.append(i)
    
     context = {
@@ -85,12 +88,13 @@ def get_products_for_users(request, category=None, name =None):
 @login_required(login_url="login/")
 def getEditBookForm(request,id):
     category = request.GET.get("category")
+    product = None
     if category == 'book':
         product = Book_Model.objects.get(id = id)
     if category == 'clothes':
         product = Clothes_Model.objects.get(id=id)
-    if category == "shoes":
-        product = Shoes_Model.objects.get(id=id)
+    if category == "Laptop":
+        product = Laptop_Model.objects.get(id=id)
     
 
     return render(request, 'bookEditForm.html',{"product": product})
@@ -99,10 +103,9 @@ def getEditBookForm(request,id):
 def getAddBookForm(request):
     return render(request, 'bookEditForm.html')
 
-@login_required(login_url="login/")
-def addProduct(request):
 
-    category = request.GET.get("category")
+def addProduct(request):
+   
     if request.method == "POST":
         name = request.POST['name']
         price = request.POST['price']
@@ -110,13 +113,13 @@ def addProduct(request):
         category = request.POST['category']
         image = request.FILES['image'] 
 
-        if category == "book":
+        if category == "books":
             book = Book_Model.objects.create(name=name, price=price, description=description, image=image)
             book.save()
 
-        if category == 'shoes':
-            shoes = Shoes_Model.objects.create(name=name, price=price, description=description, image=image)
-            shoes.save()
+        if category == 'Laptop':
+            Laptop = Laptop_Model.objects.create(name=name, price=price, description=description, image=image)
+            Laptop.save()
         
         if category == 'clothes':
             clothes = Clothes_Model.objects.create(name=name, price=price, description=description, image=image)
@@ -144,13 +147,13 @@ def editProduct(request,id):
             book.description = description
             book.image = image and image or book.image
             book.save()
-        if category == "shoes":
-            shoes = Shoes_Model.objects.get(id=id)
-            shoes.name = name
-            shoes.price = price
-            shoes.description = description
-            shoes.image = image and image
-            shoes.save()
+        if category == "Laptop":
+            Laptop = Laptop_Model.objects.get(id=id)
+            Laptop.name = name
+            Laptop.price = price
+            Laptop.description = description
+            Laptop.image = image and image
+            Laptop.save()
         if category == "clothes":
             clothes = Clothes_Model.objects.get(id=id)
             clothes.name = name
@@ -170,9 +173,9 @@ def deleteProduct(request,id):
     if category == "book":
         book = Book_Model.objects.get(id = id)
         book.delete()
-    if category == "shoes":
-        shoes = Shoes_Model.objects.get(id = id)
-        shoes.delete()
+    if category == "Laptop":
+        Laptop = Laptop_Model.objects.get(id = id)
+        Laptop.delete()
     if category == "clothes":
         clothes = Clothes_Model.objects.get(id=id)
         clothes.delete()
@@ -185,8 +188,8 @@ def get_details(request,id):
     if category == "book":
         product = Book_Model.objects.get(id = id)
        
-    if category == "shoes":
-        product = Shoes_Model.objects.get(id = id)
+    if category == "Laptop":
+        product = Laptop_Model.objects.get(id = id)
        
     if category == "clothes":
         product = Clothes_Model.objects.get(id=id)
